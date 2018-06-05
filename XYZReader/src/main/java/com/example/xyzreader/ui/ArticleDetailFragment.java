@@ -1,9 +1,6 @@
 package com.example.xyzreader.ui;
 
-import android.app.Fragment;
-import android.app.LoaderManager;
 import android.content.Intent;
-import android.content.Loader;
 import android.content.res.Resources;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -20,7 +17,10 @@ import java.util.GregorianCalendar;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.LoaderManager;
 import android.support.v4.app.ShareCompat;
+import android.support.v4.content.Loader;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.graphics.Palette;
@@ -283,18 +283,8 @@ public class ArticleDetailFragment extends Fragment implements
         return ArticleLoader.newInstanceForItemId(getActivity(), mItemId);
     }
 
-    private void setupToolbarLayout(@NonNull Cursor cursor){
-        CollapsingToolbarLayout collapsingToolbarLayout = mRootView.findViewById(R.id.collapsing_toolbar);
-        collapsingToolbarLayout.setCollapsedTitleTypeface(Typeface.DEFAULT_BOLD);
-        collapsingToolbarLayout.setExpandedTitleTypeface(Typeface.DEFAULT_BOLD);
-        final int toolbarExpandedTitleBottomMargin =
-                getResources().getDimensionPixelSize(R.dimen.detail_expanded_title_margin_bottom);
-        collapsingToolbarLayout.setExpandedTitleMarginBottom(toolbarExpandedTitleBottomMargin);
-        collapsingToolbarLayout.setTitle(cursor.getString(ArticleLoader.Query.TITLE));
-    }
-
     @Override
-    public void onLoadFinished(Loader<Cursor> cursorLoader, Cursor cursor) {
+    public void onLoadFinished(@NonNull Loader<Cursor> loader, Cursor cursor) {
         if (!isAdded()) {
             if (cursor != null) {
                 cursor.close();
@@ -310,6 +300,16 @@ public class ArticleDetailFragment extends Fragment implements
         }
 
         bindViews();
+    }
+
+    private void setupToolbarLayout(@NonNull Cursor cursor){
+        CollapsingToolbarLayout collapsingToolbarLayout = mRootView.findViewById(R.id.collapsing_toolbar);
+        collapsingToolbarLayout.setCollapsedTitleTypeface(Typeface.DEFAULT_BOLD);
+        collapsingToolbarLayout.setExpandedTitleTypeface(Typeface.DEFAULT_BOLD);
+        final int toolbarExpandedTitleBottomMargin =
+                getResources().getDimensionPixelSize(R.dimen.detail_expanded_title_margin_bottom);
+        collapsingToolbarLayout.setExpandedTitleMarginBottom(toolbarExpandedTitleBottomMargin);
+        collapsingToolbarLayout.setTitle(cursor.getString(ArticleLoader.Query.TITLE));
     }
 
     @Override
