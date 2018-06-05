@@ -9,10 +9,6 @@ buildscript {
 }
 apply plugin: 'com.android.application'
 
-repositories {
-    mavenCentral()
-}
-
 android {
     compileSdkVersion 27
     buildToolsVersion '27.0.3'
@@ -23,7 +19,12 @@ android {
     }
 }
 
-dependencies {
+dependencies{
+//    implementation 'com.github.wasabeef:glide-transformations:3.1.0'
+    implementation 'com.android.support.constraint:constraint-layout:1.1.0'
+    implementation "com.android.support:support-vector-drawable:$androidSupportVersion"
+    implementation "com.android.support:animated-vector-drawable:$androidSupportVersion"
+    implementation "com.android.support:design:$androidSupportVersion"
     implementation "com.android.support:support-v4:$androidSupportVersion"
     implementation "com.android.support:support-v13:$androidSupportVersion"
     implementation "com.android.support:appcompat-v7:$androidSupportVersion"

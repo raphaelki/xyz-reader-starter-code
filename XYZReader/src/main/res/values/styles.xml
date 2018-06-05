@@ -18,11 +18,17 @@
 <resources>
 
     <style name="Theme.Bacon" parent="@style/Theme.AppCompat.Light.NoActionBar">
-
+        <item name="windowActionBar">false</item>
+        <item name="windowActionBarOverlay">true</item>
+        <item name="windowNoTitle">true</item>
     </style>
 
-    <style name="Theme.Bacon.Detail">
-        <item name="android:statusBarColor">@android:color/transparent</item>
+    <style name="CollapsedToolbarTextAppearance" parent="TextAppearance.AppCompat.Medium">
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:textStyle">bold</item>
     </style>
 
+    <style name="ExpandedTextAppearance" parent="@style/CollapsedToolbarTextAppearance">
+        <item name="android:textSize">@dimen/detail_expanded_title_text_size</item>
+    </style>
 </resources>
