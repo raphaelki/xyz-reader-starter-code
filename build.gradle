@@ -22,6 +22,10 @@ allprojects {
 
     ext {
         androidSupportVersion = "27.1.1"
+        architectureComponentsVersion = "1.1.1"
+        roomVersion = "1.1.0"
+        retrofitVersion = "2.4.0"
+        timberVersion = "4.7.0"
     }
 }
 

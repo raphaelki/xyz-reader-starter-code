@@ -11,7 +11,6 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 27
-    buildToolsVersion '27.0.3'
 
     defaultConfig {
         minSdkVersion 19
@@ -31,6 +30,23 @@ dependencies{
     implementation "com.android.support:palette-v7:$androidSupportVersion"
     implementation "com.android.support:recyclerview-v7:$androidSupportVersion"
     implementation "com.android.support:cardview-v7:$androidSupportVersion"
+    implementation 'com.github.bumptech.glide:glide:4.7.1'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.7.1'
     implementation 'com.squareup.okhttp3:okhttp:3.10.0'
     implementation files('libs/volley.jar')
+
+    implementation "android.arch.lifecycle:extensions:$architectureComponentsVersion"
+    implementation "android.arch.lifecycle:viewmodel:$architectureComponentsVersion"
+    implementation "android.arch.lifecycle:livedata:$architectureComponentsVersion"
+    implementation "android.arch.lifecycle:common-java8:$architectureComponentsVersion"
+    androidTestImplementation "android.arch.core:core-testing:$architectureComponentsVersion"
+
+    implementation "android.arch.persistence.room:runtime:$roomVersion"
+    annotationProcessor "android.arch.persistence.room:compiler:$roomVersion"
+    testImplementation "android.arch.persistence.room:testing:$roomVersion"
+
+    implementation "com.squareup.retrofit2:retrofit:$retrofitVersion"
+    implementation "com.squareup.retrofit2:converter-gson:$retrofitVersion"
+
+    implementation "com.jakewharton.timber:timber:$timberVersion"
 }
