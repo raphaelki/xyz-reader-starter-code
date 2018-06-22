@@ -4,10 +4,8 @@ import android.database.Cursor;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
-import android.view.ViewGroup;
 
 import com.example.xyzreader.data.ArticleLoader;
-import com.example.xyzreader.ui.ArticleDetailFragment;
 
 public class FragmentPagerAdapter extends FragmentStatePagerAdapter {
 
