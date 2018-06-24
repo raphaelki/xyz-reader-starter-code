@@ -19,6 +19,6 @@ public interface ArticleDao {
     @Query("SELECT * FROM articles")
     LiveData<List<Article>> getArticles();
 
-    @Query("SELECT * FROM articles WHERE dbId =:articleId")
+    @Query("SELECT * FROM articles WHERE id =:articleId")
     LiveData<Article> getArticle(int articleId);
 }

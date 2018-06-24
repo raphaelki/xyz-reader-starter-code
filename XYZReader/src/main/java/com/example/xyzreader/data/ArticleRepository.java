@@ -16,8 +16,8 @@ public class ArticleRepository implements IArticleRepository {
 
     final private IArticleFetcher articleFetcher;
     final private ArticleDao articleDao;
-    MutableLiveData<DataState> dataState = new MutableLiveData<>();
-    MediatorLiveData<List<Article>> observedArticles = new MediatorLiveData<>();
+    private MutableLiveData<DataState> dataState = new MutableLiveData<>();
+    private MediatorLiveData<List<Article>> observedArticles = new MediatorLiveData<>();
 
     @Inject
     public ArticleRepository(IArticleFetcher articleFetcher, ArticleDao articleDao) {

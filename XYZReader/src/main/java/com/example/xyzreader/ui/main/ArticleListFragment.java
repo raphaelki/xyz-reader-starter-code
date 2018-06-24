@@ -6,12 +6,14 @@ import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 
 import com.example.xyzreader.R;
+import com.example.xyzreader.data.DataState;
 import com.example.xyzreader.databinding.FragmentArticleListBinding;
 import com.example.xyzreader.ui.common.SharedViewModel;
 
@@ -27,6 +29,8 @@ public class ArticleListFragment extends DaggerFragment {
     @Inject
     ViewModelProvider.Factory viewModelFactory;
 
+    private FragmentArticleListBinding binding;
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,7 +40,7 @@ public class ArticleListFragment extends DaggerFragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        FragmentArticleListBinding binding = DataBindingUtil.inflate(inflater, R.layout.fragment_article_list, container, false);
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_article_list, container, false);
         binding.recyclerView.setAdapter(adapter);
         return binding.getRoot();
     }
@@ -50,6 +54,28 @@ public class ArticleListFragment extends DaggerFragment {
     private void createViewModel() {
         SharedViewModel viewModel = ViewModelProviders.of(getActivity(), viewModelFactory).get(SharedViewModel.class);
         viewModel.getArticles().observe(this, adapter::swapArticles);
+        viewModel.getDataState().observe(this, dataState -> {
+            if (dataState != null) {
+                onDataStateChanged(dataState);
+            }
+        });
+        binding.swipeRefreshLayout.setOnRefreshListener(viewModel::refreshData);
+    }
+
+    private void onDataStateChanged(DataState dataState) {
+        switch (dataState) {
+            case ERROR:
+                Snackbar.make(getView(), "Error fetching new articles", Snackbar.LENGTH_LONG).show();
+                binding.swipeRefreshLayout.setRefreshing(false);
+                break;
+            case SUCCESS:
+                Snackbar.make(getView(), "Content refreshed", Snackbar.LENGTH_LONG).show();
+                binding.swipeRefreshLayout.setRefreshing(false);
+                break;
+            case REFRESHING:
+                binding.swipeRefreshLayout.setRefreshing(true);
+                break;
+        }
     }
 
     @Override

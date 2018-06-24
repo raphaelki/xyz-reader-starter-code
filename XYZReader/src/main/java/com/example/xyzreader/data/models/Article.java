@@ -8,10 +8,9 @@ import com.google.gson.annotations.SerializedName;
 @Entity(tableName = "articles")
 public class Article {
 
-    @PrimaryKey(autoGenerate = true)
-    private final int dbId;
+    @PrimaryKey
     @SerializedName("id")
-    private final int serverId;
+    private final int id;
     @SerializedName("title")
     private final String title;
     @SerializedName("author")
@@ -27,9 +26,8 @@ public class Article {
     @SerializedName("published_date")
     private final String publishedDate;
 
-    public Article(int dbId, int serverId, String title, String author, String body, String thumbUrl, String photoUrl, float aspectRatio, String publishedDate) {
-        this.dbId = dbId;
-        this.serverId = serverId;
+    public Article(int id, String title, String author, String body, String thumbUrl, String photoUrl, float aspectRatio, String publishedDate) {
+        this.id = id;
         this.title = title;
         this.author = author;
         this.body = body;
@@ -39,12 +37,8 @@ public class Article {
         this.publishedDate = publishedDate;
     }
 
-    public int getDbId() {
-        return dbId;
-    }
-
-    public int getServerId() {
-        return serverId;
+    public int getId() {
+        return id;
     }
 
     public String getTitle() {

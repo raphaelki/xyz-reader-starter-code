@@ -18,9 +18,11 @@ import javax.inject.Inject;
 public class ArticleRecyclerViewAdapter extends RecyclerView.Adapter<BindingViewHolder<ListItemArticleBinding>> {
 
     private List<Article> articles;
+    private ArticleSelectionListener navigationController;
 
     @Inject
-    public ArticleRecyclerViewAdapter() {
+    public ArticleRecyclerViewAdapter(ArticleSelectionListener navigationController) {
+        this.navigationController = navigationController;
     }
 
     @NonNull
@@ -36,6 +38,7 @@ public class ArticleRecyclerViewAdapter extends RecyclerView.Adapter<BindingView
     @Override
     public void onBindViewHolder(@NonNull BindingViewHolder<ListItemArticleBinding> holder, int position) {
         holder.binding().setArticle(articles.get(position));
+        holder.binding().setCallback(navigationController);
         holder.binding().executePendingBindings();
     }
 

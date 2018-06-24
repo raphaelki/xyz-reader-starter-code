@@ -3,12 +3,12 @@ package com.example.xyzreader.ui.main;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.transition.Transition;
-import android.support.transition.TransitionInflater;
-import android.support.v4.app.Fragment;
 
 import com.example.xyzreader.R;
+import com.example.xyzreader.ui.common.NavigationController;
 import com.example.xyzreader.ui.detail.ArticleDetailActivity;
+
+import javax.inject.Inject;
 
 import dagger.android.support.DaggerAppCompatActivity;
 
@@ -20,23 +20,16 @@ import dagger.android.support.DaggerAppCompatActivity;
  */
 public class ArticleListActivity extends DaggerAppCompatActivity {
 
+    @Inject
+    NavigationController navigationController;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         if (savedInstanceState == null) {
-            Fragment articleListFragment = new ArticleListFragment();
-            Transition enterTransition =
-                    TransitionInflater.from(this).inflateTransition(R.transition.article_list_enter);
-            enterTransition.addTarget(R.id.recycler_view);
-            articleListFragment.setEnterTransition(enterTransition);
-            getSupportFragmentManager()
-                    .beginTransaction()
-                    // reordering needs to be set for fragment enter transitions to work
-                    .setReorderingAllowed(true)
-                    .replace(R.id.main_fragment_frame, articleListFragment)
-                    .commit();
+            navigationController.navigateToArticleList();
         }
     }
 }

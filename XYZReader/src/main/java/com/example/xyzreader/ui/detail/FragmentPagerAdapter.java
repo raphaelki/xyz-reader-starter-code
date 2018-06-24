@@ -5,8 +5,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
-import com.example.xyzreader.data.ArticleLoader;
-
 public class FragmentPagerAdapter extends FragmentStatePagerAdapter {
 
     private Cursor cursor;
@@ -18,7 +16,7 @@ public class FragmentPagerAdapter extends FragmentStatePagerAdapter {
     @Override
     public Fragment getItem(int position) {
         cursor.moveToPosition(position);
-        return ArticleDetailFragment.newInstance(cursor.getLong(ArticleLoader.Query._ID));
+        return null;
     }
 
     @Override
