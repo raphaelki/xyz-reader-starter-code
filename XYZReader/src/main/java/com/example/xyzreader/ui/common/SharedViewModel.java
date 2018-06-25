@@ -2,7 +2,6 @@ package com.example.xyzreader.ui.common;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
-import android.arch.lifecycle.Transformations;
 import android.arch.lifecycle.ViewModel;
 
 import com.example.xyzreader.data.DataState;
@@ -16,15 +15,15 @@ import javax.inject.Inject;
 public class SharedViewModel extends ViewModel {
 
     private IArticleRepository articleRepository;
-    private MutableLiveData<Integer> articleId = new MutableLiveData<>();
+    private MutableLiveData<Integer> position = new MutableLiveData<>();
 
     @Inject
     public SharedViewModel(IArticleRepository articleRepository) {
         this.articleRepository = articleRepository;
     }
 
-    public void changeArticleId(int id) {
-        articleId.setValue(id);
+    public void changePosition(int newPosition) {
+        position.setValue(newPosition);
     }
 
     public LiveData<DataState> getDataState() {
@@ -39,7 +38,7 @@ public class SharedViewModel extends ViewModel {
         articleRepository.triggerFetch();
     }
 
-    public LiveData<Article> getArticle() {
-        return Transformations.switchMap(articleId, id -> articleRepository.getArticle(id));
+    public LiveData<Integer> getCurrentPosition() {
+        return position;
     }
 }

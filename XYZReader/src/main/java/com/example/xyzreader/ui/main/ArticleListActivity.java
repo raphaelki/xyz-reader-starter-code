@@ -6,7 +6,6 @@ import android.support.annotation.Nullable;
 
 import com.example.xyzreader.R;
 import com.example.xyzreader.ui.common.NavigationController;
-import com.example.xyzreader.ui.detail.ArticleDetailActivity;
 
 import javax.inject.Inject;
 

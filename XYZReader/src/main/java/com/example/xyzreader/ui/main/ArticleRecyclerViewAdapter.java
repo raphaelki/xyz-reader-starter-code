@@ -2,6 +2,7 @@ package com.example.xyzreader.ui.main;
 
 import android.databinding.DataBindingUtil;
 import android.support.annotation.NonNull;
+import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
@@ -37,8 +38,14 @@ public class ArticleRecyclerViewAdapter extends RecyclerView.Adapter<BindingView
 
     @Override
     public void onBindViewHolder(@NonNull BindingViewHolder<ListItemArticleBinding> holder, int position) {
-        holder.binding().setArticle(articles.get(position));
+        Article article = articles.get(position);
+        holder.binding().setArticle(article);
         holder.binding().setCallback(navigationController);
+        holder.binding().setPosition(position);
+        String transitionName = article.getTitle();
+        ViewCompat.setTransitionName(holder.binding().thumbnail, transitionName);
+        holder.binding().articleCv.setOnClickListener(
+                v -> navigationController.onArticleClicked(position, holder.binding().thumbnail, transitionName));
         holder.binding().executePendingBindings();
     }
 
