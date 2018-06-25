@@ -20,8 +20,7 @@ public class FragmentPagerAdapter extends FragmentStatePagerAdapter {
 
     @Override
     public Fragment getItem(int position) {
-        String transitionName = articles.get(position).getTitle();
-        return ArticleDetailChildFragment.create(position, transitionName);
+        return ArticleDetailChildFragment.create(position);
     }
 
     @Override

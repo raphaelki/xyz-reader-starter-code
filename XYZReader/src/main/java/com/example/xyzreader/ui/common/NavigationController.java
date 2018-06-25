@@ -29,10 +29,10 @@ public class NavigationController implements ArticleSelectionListener {
 
     public void navigateToDetailsFragment(int position, View view, String transitionName) {
         ArticleDetailParentFragment articleDetailParentFragment = ArticleDetailParentFragment.create(position);
-//        Transition enterTransition =
-//                TransitionInflater.from(context).inflateTransition(R.transition.article_list_enter);
-//        enterTransition.addTarget(R.id.details_frame);
-//        articleDetailParentFragment.setEnterTransition(enterTransition);
+        Transition enterTransition =
+                TransitionInflater.from(context).inflateTransition(R.transition.article_list_enter);
+        enterTransition.addTarget(R.id.article_body);
+        articleDetailParentFragment.setEnterTransition(enterTransition);
         fragmentManager.beginTransaction()
                 .addSharedElement(view, transitionName)
                 .addToBackStack(null)
@@ -49,7 +49,7 @@ public class NavigationController implements ArticleSelectionListener {
         fragmentManager.beginTransaction()
                 // reordering needs to be set for fragment enter transitions to work
 //                .setReorderingAllowed(true)
-                .replace(R.id.main_fragment_frame, articleListFragment)
+                .add(R.id.main_fragment_frame, articleListFragment)
                 .commit();
     }
 

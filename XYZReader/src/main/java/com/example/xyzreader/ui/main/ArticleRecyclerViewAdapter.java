@@ -42,10 +42,11 @@ public class ArticleRecyclerViewAdapter extends RecyclerView.Adapter<BindingView
         holder.binding().setArticle(article);
         holder.binding().setCallback(navigationController);
         holder.binding().setPosition(position);
-        String transitionName = article.getTitle();
-        ViewCompat.setTransitionName(holder.binding().thumbnail, transitionName);
         holder.binding().articleCv.setOnClickListener(
-                v -> navigationController.onArticleClicked(position, holder.binding().thumbnail, transitionName));
+                v -> navigationController.onArticleClicked(
+                        position,
+                        holder.binding().thumbnail,
+                        ViewCompat.getTransitionName(holder.binding().thumbnail)));
         holder.binding().executePendingBindings();
     }
 

@@ -4,6 +4,7 @@
 
     <data>
 
+        <import type="com.example.xyzreader.Constants" />
         <variable
             name="article"
             type="com.example.xyzreader.data.models.Article" />
@@ -46,6 +47,7 @@
                 android:adjustViewBounds="true"
                 android:scaleType="centerCrop"
                 android:src="@drawable/scarletplague"
+                android:transitionName="@{Constants.IMAGE_TRANSITION_NAME_PREFIX + article.id}"
                 app:layout_constraintDimensionRatio="16:9"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent" />

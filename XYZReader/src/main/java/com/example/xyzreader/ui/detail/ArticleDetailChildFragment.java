@@ -18,6 +18,7 @@ import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.example.xyzreader.Constants;
 import com.example.xyzreader.R;
+import com.example.xyzreader.data.models.Article;
 import com.example.xyzreader.databinding.FragmentArticleDetailChildBinding;
 import com.example.xyzreader.ui.common.GlideApp;
 import com.example.xyzreader.ui.common.SharedViewModel;
@@ -31,13 +32,11 @@ public class ArticleDetailChildFragment extends DaggerFragment {
     @Inject
     ViewModelProvider.Factory viewModelFactory;
     private FragmentArticleDetailChildBinding binding;
-    private Bundle arguments;
 
-    public static ArticleDetailChildFragment create(int position, String transitionName) {
+    public static ArticleDetailChildFragment create(int position) {
         ArticleDetailChildFragment fragment = new ArticleDetailChildFragment();
         Bundle bundle = new Bundle();
         bundle.putInt(Constants.ARTICLE_POSITION_KEY, position);
-        bundle.putString(Constants.TRANSITION_NAME_KEY, transitionName);
         fragment.setArguments(bundle);
         return fragment;
     }
@@ -46,15 +45,6 @@ public class ArticleDetailChildFragment extends DaggerFragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_article_detail_child, container, false);
-        if (getArguments() != null) {
-            arguments = getArguments();
-        }
-        if (arguments.containsKey(Constants.TRANSITION_NAME_KEY)) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                binding.photo.setTransitionName(arguments.getString(Constants.TRANSITION_NAME_KEY));
-            }
-        }
-//        binding.setRequestListener(this);
         return binding.getRoot();
     }
 
@@ -75,13 +65,16 @@ public class ArticleDetailChildFragment extends DaggerFragment {
 
     private void createViewModel() {
         SharedViewModel viewModel = ViewModelProviders.of(getActivity(), viewModelFactory).get(SharedViewModel.class);
-        if (arguments.containsKey(Constants.ARTICLE_POSITION_KEY)) {
-            int position = arguments.getInt(Constants.ARTICLE_POSITION_KEY);
+        if (getArguments() != null && getArguments().containsKey(Constants.ARTICLE_POSITION_KEY)) {
+            int position = getArguments().getInt(Constants.ARTICLE_POSITION_KEY);
             viewModel.getArticles().observe(this, articles -> {
                 if (articles != null) {
-                    binding.setArticle(articles.get(position));
+                    Article article = articles.get(position);
+                    binding.setArticle(article);
+                    // call executePedingBindings to set the correct transitionName in binding
+                    binding.executePendingBindings();
                     GlideApp.with(this)
-                            .load(articles.get(position).getPhotoUrl())
+                            .load(article.getPhotoUrl())
                             .listener(new RequestListener<Drawable>() {
                                 @Override
                                 public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {

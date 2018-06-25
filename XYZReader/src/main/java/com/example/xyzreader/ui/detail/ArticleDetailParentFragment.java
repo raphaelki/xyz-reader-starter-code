@@ -9,7 +9,10 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.transition.TransitionInflater;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -22,12 +25,11 @@ import com.example.xyzreader.ui.main.ArticleListActivity;
 import javax.inject.Inject;
 
 import dagger.android.support.DaggerFragment;
-import timber.log.Timber;
 
 /**
  * A fragment representing a single Article detail screen. This fragment is
  * either contained in a {@link ArticleListActivity} in two-pane mode (on
- * tablets) or a {@link ArticleDetailActivity} on handsets.
+ * tablets) or a  on handsets.
  */
 public class ArticleDetailParentFragment extends DaggerFragment {
 
@@ -55,15 +57,34 @@ public class ArticleDetailParentFragment extends DaggerFragment {
             setSharedElementEnterTransition(TransitionInflater.from(getContext()).inflateTransition(android.R.transition.move));
         }
         setSharedElementReturnTransition(null);
+        setHasOptionsMenu(true);
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        Timber.d("onCreateView");
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_article_detail_parent, container, false);
         binding.pager.setAdapter(adapter);
+        setupToolbar();
         return binding.getRoot();
+    }
+
+    private void setupToolbar() {
+        AppCompatActivity activity = (AppCompatActivity) getActivity();
+        activity.setSupportActionBar(binding.toolbar);
+        ActionBar actionBar = activity.getSupportActionBar();
+        actionBar.setDisplayShowTitleEnabled(false);
+        actionBar.setDisplayHomeAsUpEnabled(true);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                getActivity().onBackPressed();
+                return true;
+        }
+        return false;
     }
 
     private void createViewModel() {
@@ -87,8 +108,9 @@ public class ArticleDetailParentFragment extends DaggerFragment {
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        Timber.d("onActivityCreated");
         super.onActivityCreated(savedInstanceState);
         createViewModel();
     }
+
+
 }
