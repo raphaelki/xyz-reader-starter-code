@@ -2,15 +2,18 @@ package com.example.xyzreader.ui.detail;
 
 import android.arch.lifecycle.ViewModelProvider;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.transition.TransitionInflater;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.ShareCompat;
+import android.support.v4.app.SharedElementCallback;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.transition.Transition;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -18,17 +21,22 @@ import android.view.ViewGroup;
 
 import com.example.xyzreader.Constants;
 import com.example.xyzreader.R;
+import com.example.xyzreader.databinding.FragmentArticleDetailChildBinding;
 import com.example.xyzreader.databinding.FragmentArticleDetailParentBinding;
+import com.example.xyzreader.ui.MainActivity;
 import com.example.xyzreader.ui.common.SharedViewModel;
-import com.example.xyzreader.ui.main.ArticleListActivity;
+
+import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 
 import dagger.android.support.DaggerFragment;
+import timber.log.Timber;
 
 /**
  * A fragment representing a single Article detail screen. This fragment is
- * either contained in a {@link ArticleListActivity} in two-pane mode (on
+ * either contained in a {@link MainActivity} in two-pane mode (on
  * tablets) or a  on handsets.
  */
 public class ArticleDetailParentFragment extends DaggerFragment {
@@ -39,6 +47,7 @@ public class ArticleDetailParentFragment extends DaggerFragment {
     @Inject
     FragmentPagerAdapter adapter;
 
+    private int currentPagerPosition;
     private FragmentArticleDetailParentBinding binding;
 
     public static ArticleDetailParentFragment create(int position) {
@@ -51,21 +60,45 @@ public class ArticleDetailParentFragment extends DaggerFragment {
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
+        Timber.d("Creating ArticleDetailParentFragment");
         super.onCreate(savedInstanceState);
-        postponeEnterTransition();
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            setSharedElementEnterTransition(TransitionInflater.from(getContext()).inflateTransition(android.R.transition.move));
-        }
-        setSharedElementReturnTransition(null);
         setHasOptionsMenu(true);
+    }
+
+    private void setupTransition() {
+        Transition transition =
+                android.transition.TransitionInflater.from(getContext())
+                        .inflateTransition(R.transition.image_shared_element_transition);
+        setSharedElementEnterTransition(transition);
+        setEnterSharedElementCallback(new SharedElementCallback() {
+            @Override
+            public void onMapSharedElements(List<String> names, Map<String, View> sharedElements) {
+                Fragment fragment = (Fragment) binding.pager.getAdapter().instantiateItem(binding.pager, binding.pager.getCurrentItem());
+                View view = fragment.getView();
+                if (view == null) return;
+                FragmentArticleDetailChildBinding childBinding = DataBindingUtil.getBinding(view);
+                sharedElements.put(names.get(0), childBinding.photo);
+                sharedElements.put(names.get(1), childBinding.drawInsetsFrameLayout);
+            }
+        });
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        if (savedInstanceState == null) {
+            postponeEnterTransition();
+        }
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_article_detail_parent, container, false);
         binding.pager.setAdapter(adapter);
+        createViewModel();
+        setupTransition();
         setupToolbar();
+        binding.shareFab.setOnClickListener(v -> startActivity(Intent.createChooser(ShareCompat.IntentBuilder.from(getActivity())
+                .setType("text/plain")
+                .setText("Some sample text")
+                .getIntent(), getString(R.string.action_share))));
+
         return binding.getRoot();
     }
 
@@ -100,17 +133,18 @@ public class ArticleDetailParentFragment extends DaggerFragment {
                 viewModel.changePosition(position);
             }
         });
-        viewModel.getArticles().observe(this, articles -> {
-            adapter.swapArticles(articles);
-            viewModel.getCurrentPosition().observe(this, binding.pager::setCurrentItem);
+        viewModel.getArticleCount().observe(this, articleCount -> {
+            if (articleCount != null) {
+                adapter.setArticleCount(articleCount);
+                viewModel.getCurrentPosition().observe(this, currentPosition -> binding.pager.setCurrentItem(currentPosition, false));
+            }
         });
+
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        createViewModel();
+
     }
-
-
 }

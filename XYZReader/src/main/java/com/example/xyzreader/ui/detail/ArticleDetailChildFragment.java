@@ -3,35 +3,44 @@ package com.example.xyzreader.ui.detail;
 import android.arch.lifecycle.ViewModelProvider;
 import android.arch.lifecycle.ViewModelProviders;
 import android.databinding.DataBindingUtil;
-import android.graphics.drawable.Drawable;
-import android.os.Build;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v7.graphics.Palette;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.bumptech.glide.load.DataSource;
-import com.bumptech.glide.load.engine.GlideException;
-import com.bumptech.glide.request.RequestListener;
-import com.bumptech.glide.request.target.Target;
+import com.example.xyzreader.AppExecutors;
 import com.example.xyzreader.Constants;
 import com.example.xyzreader.R;
 import com.example.xyzreader.data.models.Article;
 import com.example.xyzreader.databinding.FragmentArticleDetailChildBinding;
 import com.example.xyzreader.ui.common.GlideApp;
 import com.example.xyzreader.ui.common.SharedViewModel;
+import com.example.xyzreader.ui.main.GlideRequestListener;
+
+import java.util.concurrent.ExecutionException;
 
 import javax.inject.Inject;
 
 import dagger.android.support.DaggerFragment;
+import timber.log.Timber;
 
 public class ArticleDetailChildFragment extends DaggerFragment {
 
     @Inject
     ViewModelProvider.Factory viewModelFactory;
+
+    private final GlideRequestListener glideRequestListener = () -> {
+        getParentFragment().startPostponedEnterTransition();
+    };
+    @Inject
+    AppExecutors executors;
+
     private FragmentArticleDetailChildBinding binding;
+    private Article article;
 
     public static ArticleDetailChildFragment create(int position) {
         ArticleDetailChildFragment fragment = new ArticleDetailChildFragment();
@@ -45,16 +54,8 @@ public class ArticleDetailChildFragment extends DaggerFragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_article_detail_child, container, false);
+        binding.setGlideRequestListener(glideRequestListener);
         return binding.getRoot();
-    }
-
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        postponeEnterTransition();
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            setSharedElementEnterTransition(android.transition.TransitionInflater.from(getContext()).inflateTransition(android.R.transition.move));
-        }
     }
 
     @Override
@@ -70,26 +71,46 @@ public class ArticleDetailChildFragment extends DaggerFragment {
             viewModel.getArticles().observe(this, articles -> {
                 if (articles != null) {
                     Article article = articles.get(position);
-                    binding.setArticle(article);
-                    // call executePedingBindings to set the correct transitionName in binding
-                    binding.executePendingBindings();
-                    GlideApp.with(this)
-                            .load(article.getPhotoUrl())
-                            .listener(new RequestListener<Drawable>() {
-                                @Override
-                                public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
-                                    return false;
-                                }
-
-                                @Override
-                                public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
-                                    startPostponedEnterTransition();
-                                    return false;
-                                }
-                            })
-                            .into(binding.photo);
+                    bindViews(article);
                 }
             });
         }
+    }
+
+    private void bindViews(Article newArticle) {
+        if (article == null) {
+            article = newArticle;
+            binding.setArticle(article);
+            binding.setGlideRequestListener(glideRequestListener);
+            // call executePendingBindings to set the correct transitionName in binding
+            binding.executePendingBindings();
+//            loadImages(article);
+        }
+    }
+
+    private void determineProminentPictureColors(Bitmap bitmap) {
+        Palette palette = Palette.from(bitmap).generate();
+        int defaultColor = getResources().getColor(R.color.cardview_dark_background);
+        int titleBackgroundColor = palette.getMutedColor(defaultColor);
+        binding.metaBar.setBackgroundColor(titleBackgroundColor);
+    }
+
+    private void loadImages(Article article) {
+        executors.networkIO().execute(() -> {
+            Bitmap bitmap = null;
+            try {
+                bitmap = GlideApp.with(getContext())
+                        .asBitmap()
+                        .load(article.getPhotoUrl())
+                        .submit().get();
+            } catch (InterruptedException | ExecutionException e) {
+                e.printStackTrace();
+                Timber.e(e);
+            }
+            if (bitmap != null) {
+                Bitmap finalBitmap = bitmap;
+                executors.mainThread().execute(() -> determineProminentPictureColors(finalBitmap));
+            }
+        });
     }
 }

@@ -3,15 +3,11 @@ package com.example.xyzreader.ui.detail;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
-import com.example.xyzreader.data.models.Article;
-
-import java.util.List;
-
 import javax.inject.Inject;
 
 public class FragmentPagerAdapter extends FragmentStatePagerAdapter {
 
-    private List<Article> articles;
+    private int articleCount;
 
     @Inject
     public FragmentPagerAdapter(ArticleDetailParentFragment fragment) {
@@ -25,11 +21,11 @@ public class FragmentPagerAdapter extends FragmentStatePagerAdapter {
 
     @Override
     public int getCount() {
-        return articles == null ? 0 : articles.size();
+        return articleCount;
     }
 
-    public void swapArticles(List<Article> newArticles) {
-        this.articles = newArticles;
+    public void setArticleCount(int articleCount) {
+        this.articleCount = articleCount;
         notifyDataSetChanged();
     }
 }

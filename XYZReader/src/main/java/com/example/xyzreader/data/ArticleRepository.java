@@ -12,6 +12,8 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import timber.log.Timber;
+
 public class ArticleRepository implements IArticleRepository {
 
     final private IArticleFetcher articleFetcher;
@@ -21,22 +23,25 @@ public class ArticleRepository implements IArticleRepository {
 
     @Inject
     public ArticleRepository(IArticleFetcher articleFetcher, ArticleDao articleDao) {
+        Timber.d("Creating ArticleRepository");
         this.articleFetcher = articleFetcher;
         this.articleDao = articleDao;
     }
 
     @Override
     public LiveData<List<Article>> getArticles() {
-        observedArticles.addSource(getArticlesFromDao(), articles -> {
-            if (articles == null || articles.size() == 0) {
-                triggerFetch();
-                observedArticles.removeSource(getArticlesFromDao());
-                observedArticles.addSource(getArticlesFromDao(), observedArticles::setValue);
-            } else {
-                observedArticles.setValue(articles);
-            }
-        });
-        return observedArticles;
+//        LiveData<List<Article>> articlesInDatabase = getArticlesFromDao();
+//        observedArticles.addSource(articlesInDatabase, articles -> {
+//            if (articles == null || articles.size() == 0) {
+//                triggerFetch();
+//                observedArticles.removeSource(articlesInDatabase);
+//                observedArticles.addSource(getArticlesFromDao(), observedArticles::setValue);
+//            } else {
+//                observedArticles.setValue(articles);
+//            }
+//        });
+//        return observedArticles;
+        return articleDao.getArticles();
     }
 
     private LiveData<List<Article>> getArticlesFromDao() {

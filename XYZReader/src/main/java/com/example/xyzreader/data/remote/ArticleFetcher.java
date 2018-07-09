@@ -30,6 +30,7 @@ public class ArticleFetcher implements IArticleFetcher {
 
     @Override
     public void fetchArticles(final MutableLiveData<DataState> dataState) {
+        Timber.d("Fetching new articles");
         dataState.setValue(DataState.REFRESHING);
         appExecutors.networkIO().execute(() -> {
             Response<List<Article>> response;

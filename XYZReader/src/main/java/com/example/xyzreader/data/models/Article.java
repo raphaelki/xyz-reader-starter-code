@@ -68,4 +68,21 @@ public class Article {
     public String getPublishedDate() {
         return publishedDate;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null) return false;
+        if (obj.getClass() != getClass()) return false;
+        Article article = (Article) obj;
+        return author.equals(article.author)
+                && body.equals(article.body)
+                && id == article.id
+                && thumbUrl.equals(article.thumbUrl)
+                && photoUrl.equals(article.photoUrl)
+                && aspectRatio == article.aspectRatio
+                && publishedDate.equals(article.publishedDate)
+                && title.equals(article.title);
+
+    }
 }

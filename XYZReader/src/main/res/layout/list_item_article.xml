@@ -10,14 +10,14 @@
             type="com.example.xyzreader.data.models.Article" />
 
         <variable
-            name="callback"
-            type="com.example.xyzreader.ui.main.ArticleSelectionListener" />
-
-        <variable
             name="position"
             type="Integer" />
 
         <import type="com.example.xyzreader.ui.common.ArticleUtils" />
+
+        <variable
+            name="glideRequestListener"
+            type="com.example.xyzreader.ui.main.GlideRequestListener" />
     </data>
 
     <android.support.v7.widget.CardView
@@ -31,6 +31,7 @@
         android:focusable="true"
         android:foreground="?android:attr/selectableItemBackground"
         android:minHeight="200dp"
+        android:transitionName="@{Constants.BACKGROUND_TRANSITION_NAME_PREXIX + article.id}"
         app:cardCornerRadius="4dp">
 
         <android.support.constraint.ConstraintLayout
@@ -48,6 +49,7 @@
                 android:scaleType="centerCrop"
                 android:src="@drawable/scarletplague"
                 android:transitionName="@{Constants.IMAGE_TRANSITION_NAME_PREFIX + article.id}"
+                requestListener="@{glideRequestListener}"
                 app:layout_constraintDimensionRatio="16:9"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent" />

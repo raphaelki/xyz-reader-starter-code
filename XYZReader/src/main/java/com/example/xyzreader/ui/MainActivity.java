@@ -1,4 +1,4 @@
-package com.example.xyzreader.ui.main;
+package com.example.xyzreader.ui;
 
 
 import android.os.Bundle;
@@ -17,7 +17,7 @@ import dagger.android.support.DaggerAppCompatActivity;
  * touched, lead to a {@link ArticleDetailActivity} representing item details. On tablets, the
  * activity presents a grid of items as cards.
  */
-public class ArticleListActivity extends DaggerAppCompatActivity {
+public class MainActivity extends DaggerAppCompatActivity {
 
     @Inject
     NavigationController navigationController;
