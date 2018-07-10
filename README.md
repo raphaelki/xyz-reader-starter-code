@@ -1,4 +1,9 @@
-# XYZ Reader
+# XYZ Reader Udacity Project
 
-This is the 5th of 6 projects of the [Android Developer Nanodegree](https://de.udacity.com/course/android-developer-nanodegree-by-google--nd801) program at Udacity.com.
-The project aims to learn about [Material Design](https://material.io/design/) and how to apply it to an existing app. The starter code can be found [here](https://github.com/udacity/xyz-reader-starter-code).
+5th project of the Udacity [Android Developer Nanodegree](https://de.udacity.com/course/android-developer-nanodegree-by-google--nd801).
+The project aims to learn about [Material Design](https://material.io/design/) and how to apply it to an existing app.
+[Starter code](https://github.com/udacity/xyz-reader-starter-code) is provided, which uses deprecated components and manual approaches to achieve Material Design.
+I updated the code to use Android Architecture Components and the Design Support Library.
+Additionally, I use Dagger 2 for dependency injection.
+
+Work in progress...

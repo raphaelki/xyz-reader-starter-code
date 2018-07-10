@@ -1,35 +1,31 @@
 package com.example.xyzreader.ui.detail;
 
-import android.database.Cursor;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
-import android.view.ViewGroup;
 
-import com.example.xyzreader.data.ArticleLoader;
-import com.example.xyzreader.ui.ArticleDetailFragment;
+import javax.inject.Inject;
 
 public class FragmentPagerAdapter extends FragmentStatePagerAdapter {
 
-    private Cursor cursor;
+    private int articleCount;
 
-    public FragmentPagerAdapter(FragmentManager fm) {
-        super(fm);
+    @Inject
+    public FragmentPagerAdapter(ArticleDetailParentFragment fragment) {
+        super(fragment.getChildFragmentManager());
     }
 
     @Override
     public Fragment getItem(int position) {
-        cursor.moveToPosition(position);
-        return ArticleDetailFragment.newInstance(cursor.getLong(ArticleLoader.Query._ID));
+        return ArticleDetailChildFragment.create(position);
     }
 
     @Override
     public int getCount() {
-        return cursor == null ? 0 : cursor.getCount();
+        return articleCount;
     }
 
-    public void swapCursor(Cursor cursor){
-        this.cursor = cursor;
+    public void setArticleCount(int articleCount) {
+        this.articleCount = articleCount;
         notifyDataSetChanged();
     }
 }
