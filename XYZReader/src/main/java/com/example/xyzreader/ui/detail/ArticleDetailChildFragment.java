@@ -4,6 +4,7 @@ import android.arch.lifecycle.ViewModelProvider;
 import android.arch.lifecycle.ViewModelProviders;
 import android.databinding.DataBindingUtil;
 import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -12,6 +13,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.bumptech.glide.load.DataSource;
+import com.bumptech.glide.load.engine.GlideException;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.SimpleTarget;
+import com.bumptech.glide.request.target.Target;
+import com.bumptech.glide.request.transition.Transition;
 import com.example.xyzreader.AppExecutors;
 import com.example.xyzreader.Constants;
 import com.example.xyzreader.R;
@@ -21,12 +28,9 @@ import com.example.xyzreader.ui.common.GlideApp;
 import com.example.xyzreader.ui.common.SharedViewModel;
 import com.example.xyzreader.ui.main.GlideRequestListener;
 
-import java.util.concurrent.ExecutionException;
-
 import javax.inject.Inject;
 
 import dagger.android.support.DaggerFragment;
-import timber.log.Timber;
 
 public class ArticleDetailChildFragment extends DaggerFragment {
 
@@ -84,33 +88,78 @@ public class ArticleDetailChildFragment extends DaggerFragment {
             binding.setGlideRequestListener(glideRequestListener);
             // call executePendingBindings to set the correct transitionName in binding
             binding.executePendingBindings();
+            determineProminentPictureColors(newArticle);
 //            loadImages(article);
         }
     }
 
-    private void determineProminentPictureColors(Bitmap bitmap) {
-        Palette palette = Palette.from(bitmap).generate();
-        int defaultColor = getResources().getColor(R.color.cardview_dark_background);
-        int titleBackgroundColor = palette.getMutedColor(defaultColor);
-        binding.metaBar.setBackgroundColor(titleBackgroundColor);
+    private void determineProminentPictureColors(Article article) {
+        GlideApp.with(this)
+                .load(article.getPhotoUrl())
+                .listener(new RequestListener<Drawable>() {
+                    @Override
+                    public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                        getParentFragment().startPostponedEnterTransition();
+                        return false;
+                    }
+
+                    @Override
+                    public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                        getParentFragment().startPostponedEnterTransition();
+                        return false;
+                    }
+                })
+                .into(binding.photo);
+        GlideApp.with(this)
+                .asBitmap()
+                .load(article.getPhotoUrl())
+                .into(new SimpleTarget<Bitmap>() {
+                    @Override
+                    public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+                        Palette.from(resource).generate(new Palette.PaletteAsyncListener() {
+                            @Override
+                            public void onGenerated(@NonNull Palette palette) {
+                                int defaultColor = getResources().getColor(R.color.cardview_dark_background);
+                                int titleBackgroundColor = palette.getMutedColor(defaultColor);
+                                binding.metaBar.setBackgroundColor(titleBackgroundColor);
+                            }
+                        });
+                    }
+                });
+
+//        GlideApp.with(this)
+//                .load(article.getPhotoUrl())
+//                .listener()
+//                .into(binding.photo);
+//        BitmapDrawable fixBitmap = (BitmapDrawable)binding.photo.getDrawable();
+//        if (fixBitmap == null) return;
+//        Palette.from(fixBitmap.getBitmap()).generate(new Palette.PaletteAsyncListener() {
+//            @Override
+//            public void onGenerated(@NonNull Palette palette) {
+//                int defaultColor = getResources().getColor(R.color.cardview_dark_background);
+//                int titleBackgroundColor = palette.getMutedColor(defaultColor);
+//                binding.metaBar.setBackgroundColor(titleBackgroundColor);
+//            }
+//        });
+//        getParentFragment().startPostponedEnterTransition();
     }
 
-    private void loadImages(Article article) {
-        executors.networkIO().execute(() -> {
-            Bitmap bitmap = null;
-            try {
-                bitmap = GlideApp.with(getContext())
-                        .asBitmap()
-                        .load(article.getPhotoUrl())
-                        .submit().get();
-            } catch (InterruptedException | ExecutionException e) {
-                e.printStackTrace();
-                Timber.e(e);
-            }
-            if (bitmap != null) {
-                Bitmap finalBitmap = bitmap;
-                executors.mainThread().execute(() -> determineProminentPictureColors(finalBitmap));
-            }
-        });
-    }
+//    private void loadImages(Article article) {
+//        executors.networkIO().execute(() -> {
+//            Bitmap bitmap = null;
+//            try {
+//                bitmap = GlideApp.with(getContext())
+//                        .asBitmap()
+//                        .load(article.getPhotoUrl())
+//                        .submit(100,100).get();
+//            } catch (InterruptedException | ExecutionException e) {
+//                e.printStackTrace();
+//                Timber.e(e);
+//            }
+//            if (bitmap != null) {
+//                Bitmap finalBitmap = bitmap;
+//                executors.mainThread().execute(() -> determineProminentPictureColors(finalBitmap));
+//            }
+//        });
+//    }
 }

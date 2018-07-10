@@ -7,13 +7,14 @@ import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.transition.Transition;
+import android.support.transition.TransitionInflater;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.ShareCompat;
 import android.support.v4.app.SharedElementCallback;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.transition.Transition;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -67,8 +68,9 @@ public class ArticleDetailParentFragment extends DaggerFragment {
 
     private void setupTransition() {
         Transition transition =
-                android.transition.TransitionInflater.from(getContext())
+                TransitionInflater.from(getContext())
                         .inflateTransition(R.transition.image_shared_element_transition);
+        transition.setDuration(375);
         setSharedElementEnterTransition(transition);
         setEnterSharedElementCallback(new SharedElementCallback() {
             @Override

@@ -40,4 +40,27 @@ public class BindingAdapters {
                     .into(view);
         }
     }
+
+    @BindingAdapter(value = {"imageUrl", "requestListener", "paletteListener"})
+    public static void loadImage(ImageView view, String imageUrl, GlideRequestListener listener, RequestListener<Drawable> paletteListener) {
+        if (imageUrl != null) {
+            GlideApp.with(view.getContext())
+                    .load(imageUrl)
+                    .listener(new RequestListener<Drawable>() {
+                        @Override
+                        public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                            listener.onLoadingFinished();
+                            return false;
+                        }
+
+                        @Override
+                        public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                            listener.onLoadingFinished();
+                            return false;
+                        }
+                    })
+                    .listener(paletteListener)
+                    .into(view);
+        }
+    }
 }

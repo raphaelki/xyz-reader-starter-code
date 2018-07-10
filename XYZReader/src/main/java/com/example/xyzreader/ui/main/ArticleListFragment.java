@@ -8,6 +8,8 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
+import android.support.transition.Transition;
+import android.support.transition.TransitionInflater;
 import android.support.v4.app.SharedElementCallback;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -55,11 +57,15 @@ public class ArticleListFragment extends DaggerFragment implements ArticleClickL
         adapter.setClickListener(this);
         adapter.setGlideRequestListener(glideRequestListener);
         createViewModel();
-        setupTransitionCallbacks();
+        setupTransition();
         return binding.getRoot();
     }
 
-    private void setupTransitionCallbacks() {
+    private void setupTransition() {
+        Transition exitTransition = TransitionInflater.from(getContext())
+                .inflateTransition(R.transition.article_list_exit_transition);
+        exitTransition.setDuration(375);
+        setExitTransition(exitTransition);
         postponeEnterTransition();
         setExitSharedElementCallback(new SharedElementCallback() {
             @Override
@@ -73,16 +79,6 @@ public class ArticleListFragment extends DaggerFragment implements ArticleClickL
                 ListItemArticleBinding itemBinding = (ListItemArticleBinding) viewHolder.binding();
                 sharedElements.put(names.get(0), itemBinding.thumbnail);
                 sharedElements.put(names.get(1), itemBinding.articleCv);
-
-//                sharedElements.clear();
-//                names.clear();
-//                String thumbnailTransitionName = ViewCompat.getTransitionName(itemBinding.thumbnail);
-//                String backgroundTransitionName = ViewCompat.getTransitionName(itemBinding.articleCv);
-//                names.add(thumbnailTransitionName);
-//                names.add(backgroundTransitionName);
-//                sharedElements.put(thumbnailTransitionName, itemBinding.thumbnail);
-//                sharedElements.put(backgroundTransitionName, itemBinding.articleCv);
-//                Timber.d("New Transition names: " + thumbnailTransitionName + ", " + backgroundTransitionName);
             }
         });
     }
