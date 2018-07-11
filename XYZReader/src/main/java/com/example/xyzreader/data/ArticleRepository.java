@@ -30,18 +30,19 @@ public class ArticleRepository implements IArticleRepository {
 
     @Override
     public LiveData<List<Article>> getArticles() {
-//        LiveData<List<Article>> articlesInDatabase = getArticlesFromDao();
-//        observedArticles.addSource(articlesInDatabase, articles -> {
-//            if (articles == null || articles.size() == 0) {
-//                triggerFetch();
-//                observedArticles.removeSource(articlesInDatabase);
-//                observedArticles.addSource(getArticlesFromDao(), observedArticles::setValue);
-//            } else {
-//                observedArticles.setValue(articles);
-//            }
-//        });
-//        return observedArticles;
-        return articleDao.getArticles();
+        LiveData<List<Article>> dbArticles = getArticlesFromDao();
+        observedArticles.addSource(dbArticles, articles -> {
+            observedArticles.removeSource(dbArticles);
+            if (articles == null || articles.size() == 0) {
+                triggerFetch();
+                observedArticles.addSource(dbArticles, observedArticles::setValue);
+            } else {
+                if (!articles.equals(observedArticles.getValue())) {
+                    observedArticles.setValue(articles);
+                }
+            }
+        });
+        return observedArticles;
     }
 
     private LiveData<List<Article>> getArticlesFromDao() {

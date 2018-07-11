@@ -97,8 +97,11 @@ public class ArticleListFragment extends DaggerFragment implements ArticleClickL
     }
 
     private void createViewModel() {
-        viewModel.getArticles().removeObserver(articleObserver);
-        viewModel.getArticles().observe(this, articleObserver);
+//        viewModel.getArticles().removeObserver(articleObserver);
+//        viewModel.getArticles().observe(this, articleObserver);
+        viewModel.getArticles().observe(this, articles -> {
+            if (articles != null) adapter.swapArticles(articles);
+        });
         viewModel.getDataState().observe(this, dataState -> {
             if (dataState != null) {
                 onDataStateChanged(dataState);

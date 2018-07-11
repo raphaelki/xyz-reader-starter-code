@@ -17,7 +17,7 @@ import dagger.Provides;
 @Module(includes = ViewModelModule.class)
 public abstract class ApplicationModule {
 
-    private static final String DB_NAME = "articles.db";
+    public static final String DB_NAME = "articles.db";
 
     @Singleton
     @Provides

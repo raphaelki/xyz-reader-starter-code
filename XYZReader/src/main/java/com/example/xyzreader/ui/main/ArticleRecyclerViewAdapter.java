@@ -75,6 +75,7 @@ public class ArticleRecyclerViewAdapter extends RecyclerView.Adapter<BindingView
             notifyItemRangeChanged(0, newArticles.size());
         } else {
             DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(new ArticleDiffCallback(newArticles, articles));
+            articles = newArticles;
             diffResult.dispatchUpdatesTo(this);
         }
     }
