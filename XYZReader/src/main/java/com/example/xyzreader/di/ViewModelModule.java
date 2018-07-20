@@ -3,7 +3,7 @@ package com.example.xyzreader.di;
 import android.arch.lifecycle.ViewModel;
 import android.arch.lifecycle.ViewModelProvider;
 
-import com.example.xyzreader.ui.ViewModelFactory;
+import com.example.xyzreader.ui.common.ViewModelFactory;
 import com.example.xyzreader.ui.common.SharedViewModel;
 
 import dagger.Binds;

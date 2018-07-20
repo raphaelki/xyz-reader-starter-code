@@ -22,6 +22,7 @@ public class SharedViewModel extends ViewModel {
     private IArticleRepository articleRepository;
     private MutableLiveData<Integer> position = new MutableLiveData<>();
     private MutableLiveData<Integer> articleCount = new MutableLiveData<>();
+    private MutableLiveData<Integer> currentPagerItemFabColor = new MutableLiveData<>();
 
     @Inject
     public SharedViewModel(IArticleRepository articleRepository) {
@@ -51,5 +52,13 @@ public class SharedViewModel extends ViewModel {
 
     public LiveData<Integer> getArticleCount() {
         return Transformations.map(getArticles(), List::size);
+    }
+
+    public void setCurrentPagerItemFabColor(int fabColor, int itemPagerPosition){
+            currentPagerItemFabColor.setValue(fabColor);
+    }
+
+    public LiveData<Integer> getCurrentPagerItemFabColor(){
+        return currentPagerItemFabColor;
     }
 }

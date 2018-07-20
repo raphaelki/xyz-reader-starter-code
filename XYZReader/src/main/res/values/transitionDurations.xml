@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <integer name="shared_element_transition_duration">400</integer>
+    <integer name="shared_element_return_delay">100</integer>
+    <integer name="pager_item_content_delay">200</integer>
+    <integer name="pager_item_content_duration">300</integer>
+    <integer name="main_transition_duration">300</integer>
+    <integer name="main_reenter_delay">250</integer>
+</resources>

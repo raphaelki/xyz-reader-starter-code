@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<transitionSet xmlns:android="http://schemas.android.com/apk/res/android"
+    android:startDelay="@integer/pager_item_content_delay">
+    <slide
+        android:slideEdge="bottom"
+        android:interpolator="@android:interpolator/fast_out_slow_in"
+        android:duration="@integer/pager_item_content_duration">
+        <targets>
+            <target android:targetId="@+id/pager_item_content"/>
+            <target android:targetId="@+id/detail_item_title"/>
+            <target android:targetId="@+id/detail_item_subtitle"/>
+        </targets>
+    </slide>
+    <fade android:duration="@integer/pager_item_content_duration">
+        <targets>
+            <target android:targetId="@+id/pager_item_blurred_image"/>
+            <target android:targetId="@+id/detail_pager_fab"/>
+            <target android:targetId="@+id/detail_pager_back_button"/>
+        </targets>
+    </fade>
+</transitionSet>

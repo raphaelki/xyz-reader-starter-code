@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<transitionSet xmlns:android="http://schemas.android.com/apk/res/android"
+    android:transitionOrdering="together">
+    <changeBounds android:duration="@integer/shared_element_transition_duration"/>
+    <!--<changeClipBounds android:duration="@integer/shared_element_transition_duration"/>-->
+    <changeTransform android:duration="@integer/shared_element_transition_duration"
+        android:reparentWithOverlay="true"/>
+    <!--<changeImageTransform android:duration="@integer/shared_element_transition_duration"/>-->
+</transitionSet>

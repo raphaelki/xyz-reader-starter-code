@@ -6,8 +6,7 @@ public class Constants {
 
     public final static String ARTICLE_ID_KEY = "article_id";
 
-    public final static String ARTICLE_POSITION_KEY = "article_position";
-    public static final String TRANSITION_NAME_KEY = "transition_name";
+    public final static String PAGER_POSITION_KEY = "pager_position";
     public final static String IMAGE_TRANSITION_NAME_PREFIX = "image_";
     public final static String BACKGROUND_TRANSITION_NAME_PREXIX = "background_";
 }

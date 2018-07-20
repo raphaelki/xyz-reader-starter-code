@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <import type="com.example.xyzreader.ui.common.ArticleUtils"/>
+        <variable
+            name="article"
+            type="com.example.xyzreader.data.models.Article"/>
+        <variable
+            name="glideRequestListener"
+            type="com.bumptech.glide.request.RequestListener&lt;android.graphics.drawable.Drawable&gt;"/>
+    </data>
+<android.support.constraint.ConstraintLayout
+    android:id="@+id/grid_item_parent_layout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:focusable="true"
+    android:background="@android:drawable/list_selector_background"
+    android:foreground="?android:selectableItemBackground"
+    android:padding="4dp"
+    android:transitionGroup="false"
+    >
+
+    <!--<View-->
+        <!--android:id="@+id/grid_item_background"-->
+        <!--android:layout_height="0dp"-->
+        <!--android:layout_width="0dp"-->
+        <!--android:background="#fff"-->
+        <!--app:layout_constraintTop_toTopOf="parent"-->
+        <!--app:layout_constraintBottom_toBottomOf="parent"-->
+        <!--app:layout_constraintLeft_toLeftOf="parent"-->
+        <!--app:layout_constraintRight_toRightOf="parent"/>-->
+
+    <ImageView
+        android:id="@+id/grid_item_picture_iv"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintDimensionRatio="16:9"
+        imageUrl="@{article.thumbUrl}"
+        requestListener="@{glideRequestListener}"
+        android:scaleType="centerCrop"
+        tools:src="@drawable/scarletplague"
+        />
+
+    <TextView
+        android:id="@+id/grid_item_title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@{article.title}"
+        tools:text="Title"
+        android:paddingTop="16dp"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:paddingBottom="4dp"
+        style="@style/TextAppearance.AppCompat.Subhead"
+        android:ellipsize="end"
+        android:textColor="#fff"
+        android:background="@color/grid_item_text_background"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/grid_item_subtitle"
+        />
+
+    <TextView
+        android:id="@+id/grid_item_subtitle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text='@{ArticleUtils.parseArticleDate(article) + " by " + article.author}'
+        tools:text="Subtitle"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:paddingBottom="16dp"
+        style="@style/TextAppearance.AppCompat.Body1"
+        android:ellipsize="end"
+        android:textColor="#b3b3b3"
+        android:background="@color/grid_item_text_background"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        />
+
+</android.support.constraint.ConstraintLayout>
+</layout>

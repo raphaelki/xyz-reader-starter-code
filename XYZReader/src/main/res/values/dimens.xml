@@ -1,16 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- detail -->
-    <dimen name="detail_expanded_title_text_size">32sp</dimen>
-    <dimen name="detail_collapsed_title_text_size">18sp</dimen>
-    <dimen name="detail_expanded_title_margin_bottom">48dp</dimen>
-    <dimen name="detail_body_text_size">16sp</dimen>
-    <item name="detail_body_line_spacing_multiplier" format="float" type="fraction">1.25</item>
-
-    <dimen name="fab_elevation">6dp</dimen>
-    <dimen name="fab_press_translation_z">6dp</dimen>
-    <dimen name="fab_margin">16dp</dimen>
-    <dimen name="details_app_bar_layout_height">240dp</dimen>
-    <dimen name="mtrl_card_spacing">8dp</dimen>
-    <dimen name="detail_title_text_size">32sp</dimen>
-
+    <integer name="grid_span_count">1</integer>
+    <dimen name="detail_pager_fab_margin">16dp</dimen>
+    <dimen name="detail_pager_fab_translation_z">6dp</dimen>
+    <dimen name="detail_pager_fab_elevation">6dp</dimen>
+    <dimen name="pager_item_content_max_width">10000dp</dimen>
+    <dimen name="pager_item_app_bar_height">500dp</dimen>
+    <dimen name="pager_item_content_padding_horizontal">16dp</dimen>
+    <dimen name="detail_pager_back_button_margin">16dp</dimen>
+    <dimen name="detail_pager_back_button_elevation">9dp</dimen>
+    <dimen name="pager_item_top_scrim_height">200dp</dimen>
 </resources>
