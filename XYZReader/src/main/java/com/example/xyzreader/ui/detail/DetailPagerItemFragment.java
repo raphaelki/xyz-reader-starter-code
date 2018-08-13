@@ -3,7 +3,6 @@ package com.example.xyzreader.ui.detail;
 import android.animation.ValueAnimator;
 import android.arch.lifecycle.ViewModelProvider;
 import android.arch.lifecycle.ViewModelProviders;
-import android.content.res.ColorStateList;
 import android.databinding.DataBindingUtil;
 import android.graphics.Bitmap;
 import android.graphics.Color;
@@ -14,18 +13,12 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.design.widget.AppBarLayout;
-import android.support.v4.content.res.ResourcesCompat;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.view.animation.FastOutSlowInInterpolator;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.graphics.Palette;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.DataSource;
@@ -34,19 +27,13 @@ import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.example.xyzreader.Constants;
 import com.example.xyzreader.R;
-import com.example.xyzreader.databinding.FragmentDetailPagerBinding;
 import com.example.xyzreader.databinding.FragmentDetailPagerItemBinding;
 import com.example.xyzreader.ui.common.SharedViewModel;
-import com.google.common.primitives.Ints;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.inject.Inject;
 
 import dagger.android.support.DaggerFragment;
 import jp.wasabeef.glide.transformations.BlurTransformation;
-import timber.log.Timber;
 
 import static com.bumptech.glide.request.RequestOptions.bitmapTransform;
 
@@ -118,14 +105,11 @@ public class DetailPagerItemFragment extends DaggerFragment {
 //        ViewCompat.setTransitionName(binding.pagerItemParentLayout, Constants.BACKGROUND_TRANSITION_NAME_PREXIX + getArticlePosition());
         binding.setGlideRequestListener(glideRequestListener);
         binding.pagerItemBody.setTypeface(Typeface.createFromAsset(getResources().getAssets(), "Rosario-Regular.ttf"));
-        binding.pagerItemAppBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
-            @Override
-            public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
-                if (Math.abs(verticalOffset) - appBarLayout.getTotalScrollRange() == 0) {
-                    fadeInAppLogo();
-                } else {
-                    fadeOutAppLogo();
-                }
+        binding.pagerItemAppBarLayout.addOnOffsetChangedListener((appBarLayout, verticalOffset) -> {
+            if (Math.abs(verticalOffset) - appBarLayout.getTotalScrollRange() == 0) {
+                fadeInAppLogo();
+            } else {
+                fadeOutAppLogo();
             }
         });
         return binding.getRoot();
