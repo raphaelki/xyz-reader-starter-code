@@ -5,5 +5,3 @@ The project aims to learn about [Material Design](https://material.io/design/) a
 [Starter code](https://github.com/udacity/xyz-reader-starter-code) is provided, which uses deprecated components and manual approaches to achieve Material Design.
 I updated the code to use Android Architecture Components and the Design Support Library.
 Additionally, I use Dagger 2 for dependency injection.
-
-Work in progress...

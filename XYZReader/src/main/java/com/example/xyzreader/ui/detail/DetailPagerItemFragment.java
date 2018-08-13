@@ -102,7 +102,6 @@ public class DetailPagerItemFragment extends DaggerFragment {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_detail_pager_item, container, false);
         viewModel = ViewModelProviders.of(getActivity(), viewModelFactory).get(SharedViewModel.class);
         ViewCompat.setTransitionName(binding.pagerItemArticleIv, Constants.IMAGE_TRANSITION_NAME_PREFIX + getArticlePosition());
-//        ViewCompat.setTransitionName(binding.pagerItemParentLayout, Constants.BACKGROUND_TRANSITION_NAME_PREXIX + getArticlePosition());
         binding.setGlideRequestListener(glideRequestListener);
         binding.pagerItemBody.setTypeface(Typeface.createFromAsset(getResources().getAssets(), "Rosario-Regular.ttf"));
         binding.pagerItemAppBarLayout.addOnOffsetChangedListener((appBarLayout, verticalOffset) -> {

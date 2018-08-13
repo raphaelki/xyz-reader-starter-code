@@ -11,7 +11,6 @@ import android.support.transition.Transition;
 import android.support.transition.TransitionInflater;
 import android.support.v4.app.SharedElementCallback;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -30,8 +29,6 @@ import javax.inject.Inject;
 
 import dagger.android.support.DaggerFragment;
 import timber.log.Timber;
-
-import static android.arch.lifecycle.ViewModelProviders.of;
 
 public class MainFragment extends DaggerFragment {
 
@@ -70,7 +67,6 @@ public class MainFragment extends DaggerFragment {
                 }
                 MainGridItemBinding itemBinding = (MainGridItemBinding) viewHolder.binding();
                 sharedElements.put(names.get(0), itemBinding.gridItemPictureIv);
-//                sharedElements.put(names.get(1), itemBinding.gridItemParentLayout);
             }
         });
     }

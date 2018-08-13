@@ -17,7 +17,6 @@ import android.support.v4.app.SharedElementCallback;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.animation.FastOutSlowInInterpolator;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -33,7 +32,6 @@ import java.util.Map;
 import javax.inject.Inject;
 
 import dagger.android.support.DaggerFragment;
-import timber.log.Timber;
 
 public class DetailPagerFragment extends DaggerFragment {
 
@@ -71,7 +69,6 @@ public class DetailPagerFragment extends DaggerFragment {
                 if (view == null) return;
                 FragmentDetailPagerItemBinding childBinding = DataBindingUtil.getBinding(view);
                 sharedElements.put(names.get(0), childBinding.pagerItemArticleIv);
-//                sharedElements.put(names.get(1), childBinding.pagerItemParentLayout);
             }
         });
     }

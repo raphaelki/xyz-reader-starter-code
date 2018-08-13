@@ -17,12 +17,6 @@
         android:layout_height="match_parent"
         android:transitionGroup="false">
 
-        <!--<View-->
-            <!--android:id="@+id/pager_item_parent_layout"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="match_parent"-->
-            <!--android:background="#fff"/>-->
-
         <ImageView
             android:id="@+id/pager_item_blurred_image"
             android:layout_width="match_parent"

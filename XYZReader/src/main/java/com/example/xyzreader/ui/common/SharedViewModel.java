@@ -21,7 +21,6 @@ public class SharedViewModel extends ViewModel {
 
     private IArticleRepository articleRepository;
     private MutableLiveData<Integer> position = new MutableLiveData<>();
-    private MutableLiveData<Integer> articleCount = new MutableLiveData<>();
     private MutableLiveData<Integer> currentPagerItemFabColor = new MutableLiveData<>();
 
     @Inject

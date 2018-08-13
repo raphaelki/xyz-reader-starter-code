@@ -14,8 +14,6 @@
     <dimen name="pager_item_content_padding_bottom">88dp</dimen>
     <dimen name="pager_item_body_top_margin">16dp</dimen>
     <dimen name="pager_item_content_text_size">18sp</dimen>
-    <dimen name="pager_item_title_text_size">32sp</dimen>
-    <dimen name="pager_item_subtitle_text_size">15sp</dimen>
     <dimen name="pager_item_title_margin_bottom">4dp</dimen>
     <dimen name="pager_item_toolbar_overlap">150dp</dimen>
     <dimen name="pager_item_toolbar_elevation">4dp</dimen>
@@ -24,4 +22,6 @@
     <dimen name="grid_item_title_padding">16dp</dimen>
     <dimen name="grid_item_title_padding_bottom">4dp</dimen>
     <item name="detail_body_line_spacing_multiplier" format="float" type="fraction">1.25</item>
+    <dimen name="pager_item_title_text_size">25sp</dimen>
+    <dimen name="pager_item_subtitle_text_size">15sp</dimen>
 </resources>

@@ -2,7 +2,5 @@
 <resources>
     <integer name="grid_span_count">2</integer>
     <dimen name="pager_item_app_bar_height">300dp</dimen>
-    <dimen name="pager_item_title_text_size">25sp</dimen>
-    <dimen name="pager_item_subtitle_text_size">15sp</dimen>
     <dimen name="pager_item_content_margin_horizontal">112dp</dimen>
 </resources>
